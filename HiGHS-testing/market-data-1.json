@@ -1,0 +1,16 @@
+{
+    "Name": "Data 1",
+    "Demand": 950,
+    "Generators": {
+        "Hydro":      {"VarCost":   0.00, "GMin":   0.00, "GMax":  400.00},
+        "Wind":       {"VarCost":   5.00, "GMin":   0.00, "GMax":  200.00},
+        "Geothermal": {"VarCost":  30.00, "GMin":   0.00, "GMax":  300.00},
+        "Gas":        {"VarCost":  50.00, "GMin":   0.00, "GMax":  200.00},
+        "Coal":       {"VarCost": 100.00, "GMin":   0.00, "GMax":  500.00}
+    },
+    "VarInitial": 0,
+    "VarLBounds": 0,
+    "VarUBounds": 1000,
+    "Engine": "appsi_highs",
+    "TimeLimit": 60    
+}

@@ -1,4 +1,4 @@
 # Random small projects and assorted files
 This is just a place to store various small projects and files.
 
-https://github.com/SolverMax/Random/blob/main/test.html
+[Test page](https://github.com/SolverMax/Random/blob/main/test.html)

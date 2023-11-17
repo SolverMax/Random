@@ -128,24 +128,19 @@ def DefineModel(Model):
     Model.Select = pyo.Var(Model.Candidate, domain = pyo.Binary)
     Model.Allocation = pyo.Var(Model.Item, Model.Candidate, within = pyo.Binary, initialize = 0)
 
-    Model.portrait = gdp.Disjunct(Model.Item)
-    Model.landscape = gdp.Disjunct(Model.Item)
+    def portrait_rule(d, i):   # Original width|length order, as specified int he data
+        d.w = pyo.Constraint(expr=sum(Model.Allocation[i, c] * Model.CandidateWidth[c] for c in Model.Candidate) >= Model.Width[i])
+        d.l = pyo.Constraint(expr=sum(Model.Allocation[i, c] * Model.CandidateLength[c] for c in Model.Candidate) >= Model.Length[i])
+    Model.portrait = gdp.Disjunct(Model.Item, rule = portrait_rule)
     
-    def rule_LBWidth1(Model, i):   # Width of allocated product must be at least width of each item it is allocated to (original width|length order)
-        return sum(Model.Allocation[i, c] * Model.CandidateWidth[c] for c in Model.Candidate) >= Model.Width[i]
-    Model.portrait.w = pyo.Constraint(Model.Item, rule = rule_LBWidth1)
-
-    def rule_LBLength1(Model, i):   # Length of allocated product must be at least length of each item it is allocated to (original width|length order)
-        return sum(Model.Allocation[i, c] * Model.CandidateLength[c] for c in Model.Candidate) >= Model.Length[i]
-    Model.portrait.l = pyo.Constraint(Model.Item, rule = rule_LBLength1)
-
-    def rule_LBWidth2(Model, i):   # Width of allocated product must be at least width of each item it is allocated to (rotated)
-        return sum(Model.Allocation[i, c] * Model.CandidateWidth[c] for c in Model.Candidate) >= Model.Length[i]
-    Model.landscape.w = pyo.Constraint(Model.Item, rule = rule_LBWidth2)
-
-    def rule_LBLength2(Model, i):   # Length of allocated product must be at least length of each item it is allocated to (rotated)
-        return sum(Model.Allocation[i, c] * Model.CandidateLength[c] for c in Model.Candidate) >= Model.Width[i]
-    Model.landscape.l = pyo.Constraint(Model.Item, rule = rule_LBLength2)
+    def landscape_rule(d, i):   # Rotated width|length order
+        d.w = pyo.Constraint(expr=sum(Model.Allocation[i, c] * Model.CandidateWidth[c] for c in Model.Candidate) >= Model.Length[i])
+        d.l = pyo.Constraint(expr=sum(Model.Allocation[i, c] * Model.CandidateLength[c] for c in Model.Candidate) >= Model.Width[i])
+    Model.landscape = gdp.Disjunct(Model.Item, rule = landscape_rule)
+    
+    def rotate_rule(Model, i):   # Use either portrait or landscape orientation for each item
+        return [Model.portrait[i], Model.landscape[i]]
+    Model.rotate = gdp.Disjunction(Model.Item, rule=rotate_rule)
     
     def rule_count(Model):   # Select the specified number of products that we want to order
         return sum(Model.Select[c] for c in Model.Candidate) == Model.Orders
@@ -164,18 +159,7 @@ def DefineModel(Model):
                - sum(Model.Width[i] * Model.Length[i] * Model.Weight[i] for i in Model.Item)
     Model.Obj = pyo.Objective(rule = rule_Obj, sense = pyo.minimize)
 
-    #Model.rotate = gdp.Disjunction(expr = [Model.portrait, Model.landscape])
-    #Model.rotate = pyo.lor(Model.portrait, Model.landscape)  # Runs, but solution is nonsense
-
-    def rotate_rule(Model, i):
-        return [Model.portrait[i], Model.landscape[i]]
-    Model.rotate = gdp.Disjunction(Model.Item, rule=rotate_rule)
-
-#    @Model.Disjunction(Model.Item)
-#    def rotate(m, i):
-#        return [m.portrait[i], m.landscape[i]]
-    
-    pyo.TransformationFactory('gdp.bigm').apply_to(Model)
+    pyo.TransformationFactory('gdp.bigm').apply_to(Model)   # Transform the disjunction rules into a form that the solver can work with
 
 def WriteOutput(Model, OrderSize, Results):
     Obj = pyo.value(Model.Obj())

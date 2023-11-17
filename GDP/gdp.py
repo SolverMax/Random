@@ -175,7 +175,7 @@ def DefineModel(Model):
 #    def rotate(m, i):
 #        return [m.portrait[i], m.landscape[i]]
     
-#    pyo.TransformationFactory('gdp.bigm').apply_to(Model)
+    pyo.TransformationFactory('gdp.bigm').apply_to(Model)
 
 def WriteOutput(Model, OrderSize, Results):
     Obj = pyo.value(Model.Obj())

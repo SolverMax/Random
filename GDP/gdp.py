@@ -128,7 +128,7 @@ def DefineModel(Model):
     Model.Select = pyo.Var(Model.Candidate, domain = pyo.Binary)
     Model.Allocation = pyo.Var(Model.Item, Model.Candidate, within = pyo.Binary, initialize = 0)
 
-    def portrait_rule(d, i):   # Original width|length order, as specified int he data
+    def portrait_rule(d, i):   # Original width|length order, as specified in the data
         d.w = pyo.Constraint(expr=sum(Model.Allocation[i, c] * Model.CandidateWidth[c] for c in Model.Candidate) >= Model.Width[i])
         d.l = pyo.Constraint(expr=sum(Model.Allocation[i, c] * Model.CandidateLength[c] for c in Model.Candidate) >= Model.Length[i])
     Model.portrait = gdp.Disjunct(Model.Item, rule = portrait_rule)

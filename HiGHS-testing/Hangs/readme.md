@@ -1,6 +1,6 @@
 # HiGHS hangs during solve for some models
 
-Issue: HiGHS hangs when solving some models using highspy. It occurs more often when the model is running as a JupyterLab notebook, but also occurs if the same model is run as a py model from the command line.
+Issue: HiGHS hangs when solving some models using highspy. It occurs more often when the model is running as a JupyterLab notebook, but also occurs if the same model is run from the command line as a py file.
 
 When the solver hangs, CPU usage drops to zero but the memory usage remains.
 

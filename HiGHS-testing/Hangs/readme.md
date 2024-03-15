@@ -4,10 +4,10 @@ Issue: HiGHS hangs when solving some models using highspy. It occurs more often 
 
 When the solver hangs, CPU usage drops to zero but the memory usage remains.
 
-The notebook in this folder is an example of a model where this behaviour occurs. The HiGHS solver stops after about 50 seconds of runtime.
+The notebook in this folder is an example of a model where this behavior occurs. The HiGHS solver stops after about 50 seconds of runtime.
 
 OS: Windows 11.
 
-HiGHS: 1.7.0 (though same behaviour occured in 1.5.3)
+HiGHS: 1.7.0 (though same behavior occurred in 1.5.3)
 
-Python: Same behaviour on several different versions of Python.
+Python: Same behavior on several different versions of Python.

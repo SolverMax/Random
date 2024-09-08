@@ -15,4 +15,11 @@ Also, Floataway Tours wishes to have a total capacity of at least 200. Data abou
   
 Your task is to create a decision model that will help Floataway to purchase boats while satisfying the above requirements and maximizing profit.
 
+Solution:
+- Number of Speedhawk boats: 28.0
+- Number of Silverbird boats: 0.0
+- Number of Catman boats: 0.0
+- Number of Classy boats: 28.0
+- Total daily profit: 5040.0
+
 Source: https://dmcommunity.org/challenge-sep-2024

@@ -1,0 +1,13 @@
+generic:
+  - canonicalName: units
+    aliases: [unit, Unit, Units]
+electricity:
+  - canonicalName: cents
+    aliases: []
+  - canonicalName: cents/kWh
+    aliases: []
+  - canonicalName: USD/kWh
+    aliases: []
+lamps:
+  - canonicalName: lamp
+    aliases: [lamps]
